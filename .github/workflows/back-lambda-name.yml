@@ -51,7 +51,7 @@ jobs:
         working-directory: infra/
         run: |
           STACK_NAME=${{ env.STACK_NAME }}
-          STACK_CONFIG_LAMBDA:=${{ env.STACK_CONFIG_LAMBDA }}
+          STACK_CONFIG_LAMBDA=${{ env.STACK_CONFIG_LAMBDA }}
           AWS_REGION=${{ env.AWS_REGION }}
           AWS_ACCOUNT_ID=${{ env.AWS_ACCOUNT_ID }}
           LAMBDA_NAME=${{ env.LAMBDA_NAME }}
