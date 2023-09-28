@@ -9,7 +9,7 @@ on:
     paths:
       - "back/lambda/hexagonal"
   
-default:
+defaults:
   run:
     working-directory: back/lambda/hexagonal
 
