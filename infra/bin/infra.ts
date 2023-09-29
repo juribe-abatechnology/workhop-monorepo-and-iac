@@ -6,6 +6,7 @@ import { Serverless } from '../lib/serverless';
 
 const app = new cdk.App();
 const config = app.node.tryGetContext('config')
+
 switch(config){
 
   case process.env.STACK_CONFIG_LAMBDA:
