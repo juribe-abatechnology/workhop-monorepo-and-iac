@@ -16,14 +16,15 @@ export class Serverless extends cdk.Stack {
     constructor(app:Construct, id:string, props: cdk.StackProps){
         super(app, id, props)
 
-        console.log("desplegando la infraestructura")
+        console.log("desplegando la infraestructura: ", process.env.AWS_SDK)
 
         const role = new Role(this, String(process.env.LAMBDA_NAME)+'-role', {
             assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
             roleName: `${process.env.LAMBDA_NAME}-role`
         });
         
-        if(String(process.env.AWS_SDK == "python")){
+        if(String(process.env.AWS_SDK === "python")){
+
             const lambdaHandler =  new lambda.PythonFunction(this, String(process.env.LAMBDA_NAME)+'-lambda', {
                 entry: join(
                     __dirname,
@@ -60,7 +61,7 @@ export class Serverless extends cdk.Stack {
             })
         }
 
-        if(String(process.env.AWS_SK) == 'nodejs'){
+        if(String(process.env.AWS_SK) === 'nodejs'){
             console.log("Deploying lambda with sdk nodejs")
             const lambdaNode =new NodejsFunction(this, String(process.env.LAMBDA_NAME)+'-lambda', {
                 entry: join(
