@@ -17,12 +17,12 @@ export class Serverless extends cdk.Stack {
 
         console.log("desplegando la infraestructura")
 
-        const role = new Role(this, String(process.env.LAMBDA_NAME), {
+        const role = new Role(this, String(process.env.LAMBDA_NAME)+'-role', {
             assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
             roleName: `${process.env.LAMBDA_NAME}-role`
         });
         
-        const lambdaHandler =  new lambda.PythonFunction(this, String(process.env.LAMBDA_NAME), {
+        const lambdaHandler =  new lambda.PythonFunction(this, String(process.env.LAMBDA_NAME)+'-lambda', {
             entry: join(
                 __dirname,
                 "../../back/lambda/hexagonal"
@@ -51,7 +51,7 @@ export class Serverless extends cdk.Stack {
             actions: ['rds:*']
         }))
 
-        new cdk.CfnOutput(this, String(process.env.LAMBDA_NAME), {
+        new cdk.CfnOutput(this, String(process.env.LAMBDA_NAME)+'-cnf', {
             value: lambdaHandler.functionName,
             description: String(process.env.LAMBDA_DESCRIPTION)
         })

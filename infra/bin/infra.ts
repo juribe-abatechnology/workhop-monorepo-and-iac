@@ -11,7 +11,7 @@ switch(config){
   case process.env.STACK_CONFIG_LAMBDA:
     const lambda = new Serverless(app, String(process.env.STACK_NAME), {
       env: {
-        account: process.env.ACCOUNT_ID,
+        account: process.env.AWS_ACCOUNT_ID,
         region: process.env.AWS_REGION
       }
     });
