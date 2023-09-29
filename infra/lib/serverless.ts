@@ -67,6 +67,10 @@ export class Serverless extends cdk.Stack {
                     __dirname,
                     "../../back/lambda/example/handler.js"
                 ),
+                depsLockFilePath: join(
+                    __dirname,
+                    "../../back/lambda/example/package-lock.js"
+                ),
                 runtime: Runtime.NODEJS_18_X,
                 timeout: cdk.Duration.minutes(1),
                 role: role,
