@@ -41,6 +41,7 @@ export class Serverless extends cdk.Stack {
                         __dirname,
                         "../../back/lambda/hexagonal"
                     ),
+                    compatibleRuntimes: [Runtime.PYTHON_3_11]
                 })
             ]
         });
