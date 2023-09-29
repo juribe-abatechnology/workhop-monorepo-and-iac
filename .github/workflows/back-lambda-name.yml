@@ -21,7 +21,7 @@ env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
   LAMBDA_NAME: hexagonal-architecture
-  LAMBDA_DESCRIPTION: example of hexagonal architecture
+  LAMBDA_DESCRIPTION: "example of hexagonal architecture"
   SECRET_MANAGER: ${{ secrets.SECRET_MANAGER }}
   ARN_RDS: ${{ secrets.ARN_RDS  }}
 
