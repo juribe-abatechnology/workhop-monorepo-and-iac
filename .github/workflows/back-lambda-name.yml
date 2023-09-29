@@ -55,7 +55,6 @@ jobs:
           AWS_REGION=${{ env.AWS_REGION }}
           AWS_ACCOUNT_ID=${{ env.AWS_ACCOUNT_ID }}
           LAMBDA_NAME=${{ env.LAMBDA_NAME }}
-          LAMBDA_DESCRIPTION=${{ env.LAMBDA_DESCRIPTION }}
           SECRET_MANAGER=${{ env.SECRET_MANAGER }}
           ARN_RDS=${{ env.ARN_RDS  }}
           aws cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.STACK_CONFIG_LAMBDA }} --require-approval never
