@@ -25,7 +25,7 @@ export class Serverless extends cdk.Stack {
         const lambdaHandler =  new lambda.PythonFunction(this, String(process.env.LAMBDA_NAME), {
             entry: join(
                 __dirname,
-                "../../back/lambda/hexagonal/handler.py"
+                "../../back/lambda/hexagonal"
             ),
             runtime: Runtime.PYTHON_3_11,
             role: role,
