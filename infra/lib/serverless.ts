@@ -15,6 +15,8 @@ export class Serverless extends cdk.Stack {
     constructor(app:Construct, id:string, props: cdk.StackProps){
         super(app, id, props)
 
+        console.log("desplegando la infraestructura")
+
         const role = new Role(this, String(process.env.LAMBDA_NAME), {
             assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
             roleName: `${process.env.LAMBDA_NAME}-role`
