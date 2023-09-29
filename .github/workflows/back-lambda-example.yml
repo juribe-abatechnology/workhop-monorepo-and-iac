@@ -41,7 +41,6 @@ jobs:
 
       - name: Install dependencies on our lambda
         run: |
-          sudo npm i
           npm install
       
       - name: Install dependencies on the infra aws cdk
