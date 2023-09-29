@@ -57,5 +57,4 @@ jobs:
           LAMBDA_NAME=${{ env.LAMBDA_NAME }}
           SECRET_MANAGER=${{ env.SECRET_MANAGER }}
           ARN_RDS=${{ env.ARN_RDS  }}
-          aws cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.STACK_CONFIG_LAMBDA }} --require-approval never
-
+          cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.STACK_CONFIG_LAMBDA }} --require-approval never
