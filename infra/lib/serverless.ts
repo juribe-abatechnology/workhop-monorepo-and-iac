@@ -23,7 +23,6 @@ export class ServerlessNodejs extends cdk.Stack {
             roleName: `${process.env.LAMBDA_NAME}-role`
         });
 
-        if(String(process.env.AWS_SK) === 'nodejs'){
             console.log("Deploying lambda with sdk nodejs")
             const lambdaNode =new NodejsFunction(this, String(process.env.LAMBDA_NAME)+'-lambda', {
                 entry: join(
@@ -55,8 +54,6 @@ export class ServerlessNodejs extends cdk.Stack {
                 value: lambdaNode.functionName,
                 description: String(process.env.LAMBDA_DESCRIPTION)
             })
-
-        }   
     }
 
 }
