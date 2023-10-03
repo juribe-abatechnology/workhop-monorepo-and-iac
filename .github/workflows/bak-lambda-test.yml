@@ -22,7 +22,7 @@ env:
   LAMBDA_NAME: test-python
   LAMBDA_DESCRIPTION: "test-python"
   SERVICE_ROLE: "lambda.amazonaws.com"
-  ENTRY_PATH: "../../back/lambda/test-python"
+  ENTRY_PATH: "../../back/lambda/test"
   ACTION_RDS: "rds:*"
   SECRET_MANAGER: ${{ secrets.SECRET_MANAGER }}
   ARN_RDS: ${{ secrets.ARN_RDS  }}
