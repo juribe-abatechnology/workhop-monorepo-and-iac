@@ -26,6 +26,7 @@ env:
   ACTION_RDS: "rds:*"
   SECRET_MANAGER: ${{ secrets.SECRET_MANAGER }}
   ARN_RDS: ${{ secrets.ARN_RDS  }}
+  AWS_SDK: python
 
 
 jobs:
@@ -62,4 +63,5 @@ jobs:
           SERVICE_ROLE=${{ env.SERVICE_ROLE }}
           ENTRY_PATH=${{ env.ENTRY_PATH }}
           ACTION_RDS=${{ env.ACTION_RDS }}
+          AWS_SDK=${{ env.AWS_SDK }}
           cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.STACK_CONFIG_LAMBDA }} --require-approval never
