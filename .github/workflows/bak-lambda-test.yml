@@ -1,4 +1,4 @@
-name: User Identity
+name: test
 
 on:
   workflow_dispatch:
@@ -6,24 +6,23 @@ on:
     branches:
       - main
     paths:
-      - "back/lambda/user-identity"
+      - "back/lambda/test-python"
   
 defaults:
   run:
-    working-directory: back/lambda/user-identity
+    working-directory: back/lambda/test-python
 
 
 env:
-  STACK_NAME: hexagonal-lambda
+  STACK_NAME: test-lambda
   STACK_CONFIG_LAMBDA: lambda
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
-  LAMBDA_NAME: user-identity
-  LAMBDA_DESCRIPTION: "user-identity"
+  LAMBDA_NAME: test-python
+  LAMBDA_DESCRIPTION: "test-python"
   SERVICE_ROLE: "lambda.amazonaws.com"
-  ENTRY_PATH: "../../back/lambda/user-identity"
-  ENTRY_PATH_LAYERS: "../../back/lambda/user-identity"
+  ENTRY_PATH: "../../back/lambda/test-python"
   ACTION_RDS: "rds:*"
   SECRET_MANAGER: ${{ secrets.SECRET_MANAGER }}
   ARN_RDS: ${{ secrets.ARN_RDS  }}
@@ -65,5 +64,4 @@ jobs:
           ENTRY_PATH=${{ env.ENTRY_PATH }}
           ACTION_RDS=${{ env.ACTION_RDS }}
           AWS_SDK=${{ env.AWS_SDK }}
-          ENTRY_PATH_LAYERS=${{ env.ENTRY_PATH_LAYERS }}
           cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.STACK_CONFIG_LAMBDA }} --require-approval never

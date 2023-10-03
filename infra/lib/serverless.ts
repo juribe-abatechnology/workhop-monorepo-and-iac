@@ -84,17 +84,21 @@ export class ServerlessPython extends cdk.Stack {
                 memorySize: 256,
                 environment: {
                     SECRET_MANAGER: String(process.env.SECRET_MANAGER)
-                },
-                layers: [
+                }
+            });
+            if(String(process.env.ENTRY_PATH_LAYERS) !==undefined){
+                console.log("Agregando Layers")
+                const layers = [
                     new lambda.PythonLayerVersion(this, String(process.env.LAMBDA_NAME)+'-layer', {
                         entry: join(
                             __dirname,
-                            String(process.env.ENTRY_PATH)
+                            String(process.env.ENTRY_PATH_LAYERS)
                         ),
                         compatibleRuntimes: [Runtime.PYTHON_3_11]
                     })
                 ]
-            });
+                lambdaHandler.addLayers(...layers)
+            }
 
             lambdaHandler.addToRolePolicy(new PolicyStatement({
                 effect: Effect.ALLOW,
