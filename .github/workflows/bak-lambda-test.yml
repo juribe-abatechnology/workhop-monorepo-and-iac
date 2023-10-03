@@ -6,11 +6,11 @@ on:
     branches:
       - main
     paths:
-      - "back/lambda/test-python"
+      - "back/lambda/test"
   
 defaults:
   run:
-    working-directory: back/lambda/test-python
+    working-directory: back/lambda/test
 
 
 env:
