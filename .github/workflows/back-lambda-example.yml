@@ -12,7 +12,6 @@ defaults:
   run:
     working-directory: back/lambda/example
 
-
 env:
   STACK_NAME: lambda-example
   STACK_CONFIG_LAMBDA: lambda

@@ -5,9 +5,10 @@ from domain.post.service.post import ServicePost
 from infraestructure.adapters.dtb.dtb import DataBase
 from infraestructure.adapters.cloud.secrets import SecretsManager
 from infraestructure.adapters.post.query import courses
+from config.config import secrets_manager
 
 secretManager = SecretsManager(boto.client('secretsmanager'))
-secretManager.name = "PostgreSQLDEV" # TODO: environment
+secretManager.name = secrets_manager # TODO: environment
 credentials = secretManager.get_value()
 refatctor = json.loads(credentials['SecretString'])
 

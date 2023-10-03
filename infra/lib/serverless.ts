@@ -58,7 +58,6 @@ export class ServerlessNodejs extends cdk.Stack {
 
 }
 
-
 export class ServerlessPython extends cdk.Stack {
 
     constructor(app:Construct, id:string, props: cdk.StackProps){
