@@ -22,7 +22,7 @@ env:
   LAMBDA_NAME: user-identity
   LAMBDA_DESCRIPTION: "user-identity"
   SERVICE_ROLE: "lambda.amazonaws.com"
-  ENTRY_PATH: "../../back/lambda/hexagonal"
+  ENTRY_PATH: "../../back/lambda/user-identity"
   ACTION_RDS: "rds:*"
   SECRET_MANAGER: ${{ secrets.SECRET_MANAGER }}
   ARN_RDS: ${{ secrets.ARN_RDS  }}
