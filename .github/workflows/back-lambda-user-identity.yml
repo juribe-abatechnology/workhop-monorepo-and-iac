@@ -23,7 +23,7 @@ env:
   LAMBDA_DESCRIPTION: "user-identity"
   SERVICE_ROLE: "lambda.amazonaws.com"
   ENTRY_PATH: "../../back/lambda/hexagonal"
-  ACTION_RDS: 'rds:*'
+  ACTION_RDS: "rds:*"
   SECRET_MANAGER: ${{ secrets.SECRET_MANAGER }}
   ARN_RDS: ${{ secrets.ARN_RDS  }}
 
@@ -59,4 +59,7 @@ jobs:
           LAMBDA_NAME=${{ env.LAMBDA_NAME }}
           SECRET_MANAGER=${{ env.SECRET_MANAGER }}
           ARN_RDS=${{ env.ARN_RDS  }}
+          SERVICE_ROLE=${{ env.SERVICE_ROLE }}
+          ENTRY_PATH=${{ env.ENTRY_PATH }}
+          ACTION_RDS=${{ env.ACTION_RDS }}
           cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.STACK_CONFIG_LAMBDA }} --require-approval never
