@@ -19,7 +19,7 @@ export class ServerlessNodejs extends cdk.Stack {
         console.log("desplegando la infraestructura: ", process.env.AWS_SDK)
 
         const role = new Role(this, String(process.env.LAMBDA_NAME)+'-role', {
-            assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+            assumedBy: new ServicePrincipal(String(process.env.SERVICE_ROLE)),
             roleName: `${process.env.LAMBDA_NAME}-role`
         });
 
@@ -27,11 +27,11 @@ export class ServerlessNodejs extends cdk.Stack {
             const lambdaNode =new NodejsFunction(this, String(process.env.LAMBDA_NAME)+'-lambda', {
                 entry: join(
                     __dirname,
-                    "../../back/lambda/example/handler.js"
+                    String(process.env.ENTRY_PATH)
                 ),
                 depsLockFilePath: join(
                     __dirname,
-                    "../../back/lambda/example/package-lock.json"
+                    String(process.env.DEPS_LOCK_FILE_PATH)
                 ),
                 runtime: Runtime.NODEJS_18_X,
                 timeout: cdk.Duration.minutes(1),
@@ -46,8 +46,8 @@ export class ServerlessNodejs extends cdk.Stack {
 
             lambdaNode.addToRolePolicy(new PolicyStatement({
                 effect: Effect.ALLOW,
-                resources: ["arn:aws:dynamodb:us-east-1:408058604061:table/payment"],
-                actions: ["dynamodb:*"]
+                resources: [String(process.env.ARN_DYNAMODB)],
+                actions: [String(process.env.ACTION_DYNAMODB)]
             }));
 
             new cdk.CfnOutput(this, String(process.env.LAMBDA_NAME)+'-cnf', {
@@ -66,7 +66,7 @@ export class ServerlessPython extends cdk.Stack {
         console.log("desplegando la infraestructura: ", process.env.AWS_SDK)
 
         const role = new Role(this, String(process.env.LAMBDA_NAME)+'-role', {
-            assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+            assumedBy: new ServicePrincipal(String(process.env.SERVICE_ROLE)),
             roleName: `${process.env.LAMBDA_NAME}-role`
         });
         
@@ -75,7 +75,7 @@ export class ServerlessPython extends cdk.Stack {
             const lambdaHandler =  new lambda.PythonFunction(this, String(process.env.LAMBDA_NAME)+'-lambda', {
                 entry: join(
                     __dirname,
-                    "../../back/lambda/hexagonal"
+                    String(process.env.ENTRY_PATH)
                 ),
                 runtime: Runtime.PYTHON_3_11,
                 role: role,
@@ -89,7 +89,7 @@ export class ServerlessPython extends cdk.Stack {
                     new lambda.PythonLayerVersion(this, String(process.env.LAMBDA_NAME)+'-layer', {
                         entry: join(
                             __dirname,
-                            "../../back/lambda/hexagonal"
+                            String(process.env.ENTRY_PATH)
                         ),
                         compatibleRuntimes: [Runtime.PYTHON_3_11]
                     })
@@ -99,7 +99,7 @@ export class ServerlessPython extends cdk.Stack {
             lambdaHandler.addToRolePolicy(new PolicyStatement({
                 effect: Effect.ALLOW,
                 resources: [String(process.env.ARN_RDS)],
-                actions: ['rds:*']
+                actions: [String(process.env.ACTION_RDS)]
             }))
 
             new cdk.CfnOutput(this, String(process.env.LAMBDA_NAME)+'-cnf', {

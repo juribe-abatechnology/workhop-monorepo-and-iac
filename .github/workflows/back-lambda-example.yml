@@ -20,6 +20,11 @@ env:
 
   LAMBDA_NAME: abatech
   LAMBDA_DESCRIPTION: "example of serverless"
+  SERVICE_ROLE: "lambda.amazonaws.com"
+  ENTRY_PATH: "../../back/lambda/example/handler.js"
+  DEPS_LOCK_FILE_PATH: "../../back/lambda/example/package-lock.json"
+  ARN_DYNAMODB: "arn:aws:dynamodb:us-east-1:408058604061:table/payment"
+  ACTION_DYNAMODB: "dynamodb:*"
   SECRET_MANAGER: ${{ secrets.SECRET_MANAGER }}
   ARN_RDS: ${{ secrets.ARN_RDS  }}
   AWS_SDK: nodejs
@@ -60,4 +65,9 @@ jobs:
           SECRET_MANAGER=${{ env.SECRET_MANAGER }}
           ARN_RDS=${{ env.ARN_RDS  }}
           AWS_SDK=${{ env.AWS_SDK }}
+          SERVICE_ROLE=${{ env.SERVICE_ROLE }}
+          ENTRY_PATH=${{ env.ENTRY_PATH }}
+          DEPS_LOCK_FILE_PATH=${{ env.DEPS_LOCK_FILE_PATH }}
+          ARN_DYNAMODB=${{ env.ARN_DYNAMODB }}
+          ACTION_DYNAMODB=${{ env.ACTION_DYNAMODB }}
           cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.STACK_CONFIG_LAMBDA }} --require-approval never
