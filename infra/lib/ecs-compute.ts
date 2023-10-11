@@ -6,7 +6,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import {Bucket} from 'aws-cdk-lib/aws-s3';
 import { ClusterUtils } from './utils/cluster';
 
-// const clusterUtils = new ClusterUtils()
+const clusterUtils = new ClusterUtils()
 
 export class InfraEcsCompute extends cdk.Stack {
 
@@ -34,9 +34,11 @@ export class InfraEcsCompute extends cdk.Stack {
                 vpc: vpc
         });
         
+        /*
         cluster.addCapacity('EC2CapacityASG', {
             instanceType: cdk.aws_ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
         });
+        */
 
         const executionRolePolicy =  new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
@@ -109,18 +111,25 @@ export class InfraEcsCompute extends cdk.Stack {
           desiredCount:1,
         });
 
+        // Setup AutoScaling policy
+        const scaling = service.autoScaleTaskCount({ maxCapacity: 3, minCapacity: 1 });
+        scaling.scaleOnCpuUtilization('CpuScaling'+String(process.env.ECR_REPOSITORY), {
+            targetUtilizationPercent: 50,
+            scaleInCooldown: cdk.Duration.seconds(60),
+            scaleOutCooldown: cdk.Duration.seconds(60)
+        });
+
         new cdk.CfnOutput(this, 'Service1Arn', {
             value: service.serviceArn,
         });
 
-        // this.stopTaskDefinition()
+        this.stopTaskDefinition()
     }
 
-    /*
+    
     async stopTaskDefinition() {
        const taskArn =  await clusterUtils.getClusterTasks();
        await clusterUtils.taskDefinitionStop(taskArn);
     }
-    */
 
 }
