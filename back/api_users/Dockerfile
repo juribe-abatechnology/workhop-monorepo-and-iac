@@ -3,8 +3,9 @@ RUN mkdir -p /build
 
 COPY ./package.json ./package-lock.json /build/
 WORKDIR /build
-RUN npm cache clean --force && rm -rf node_modules && npm install
+RUN npm install
 RUN npm ci
+
 
 COPY . /build
 
@@ -19,10 +20,9 @@ WORKDIR /home/$user/src
 
 COPY --from=builder /build ./
 
-RUN npm install
 EXPOSE 3000
 
 ENV NODE_ENV=dev
 ENV PORT=80
 
-CMD [ "node", "server.js"]
+CMD [ "npm", "start"]
