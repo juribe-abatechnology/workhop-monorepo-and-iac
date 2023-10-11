@@ -15,8 +15,8 @@ export class InfraEcsCompute extends cdk.Stack {
         console.log('Deploy our stack cluster AWS ECS 🚀', process.env.CALLER_IDENTITY_ARN)
         const stack = new cdk.Stack(scope, String(process.env.INFRA_ECS_VPC_CLUSTER), {
                 env: {
-                    account: process.env.ACCOUNT_ID,
-                    region: process.env.REGION
+                    account: process.env.AWS_ACCOUNT_ID,
+                    region: process.env.AWS_REGION
                 }
         });
 
@@ -57,37 +57,7 @@ export class InfraEcsCompute extends cdk.Stack {
         
         taskDefinition.addToExecutionRolePolicy(executionRolePolicy)
 
-        const resourcesArns = [];
-        if (process.env.S3 && process.env.S3_NAME) {
-            console.log('creando el bucket de s3 ✅')
-            const s3Bucket = new Bucket(this, String(process.env.INFRA_STACK_NAME).replace(/ /g, '') + String(process.env.S3_NAME).replace(/ /g, '') + 'Bucket', {
-              bucketName: String(process.env.S3_NAME),
-              publicReadAccess: false,
-              removalPolicy: cdk.RemovalPolicy.DESTROY
-            });
-            resourcesArns.push(s3Bucket.bucketArn);
-            resourcesArns.push(s3Bucket.bucketArn + '/*');
-
-            // grant access to ec2
-            s3Bucket.addToResourcePolicy(new iam.PolicyStatement({
-                sid: process.env.INFRA_STACK_NAME + 'AllowPushPull',
-				effect: iam.Effect.ALLOW,
-				principals: [new iam.ArnPrincipal('arn:aws:iam::738453287931:user/JorgeUribe')],
-                actions: [
-                    "s3:PutObject",
-                    "s3:GetObject",
-                    "s3:DeleteObject",
-                    's3:ListBucket'
-                ],
-                resources: [
-                    `${s3Bucket.bucketArn}/*`,
-                    s3Bucket.bucketArn
-                ],
-            }));
-
-            new cdk.CfnOutput(this,  'BucketName' + String(process.env.S3_NAME), { value: s3Bucket.bucketName });
-        }
-        
+        /*
         taskDefinition.addToTaskRolePolicy(
             new iam.PolicyStatement({
                 effect: iam.Effect.ALLOW,
@@ -95,11 +65,11 @@ export class InfraEcsCompute extends cdk.Stack {
                 actions: ['s3:*'],
             })
         )
+        */
         
-
         const containerEc2 = taskDefinition.addContainer(String(process.env.ECR_REPOSITORY), {
             image: ecs.ContainerImage.fromRegistry(String(process.env.ECR_IMAGE_URI)),
-            logging: ecs.LogDrivers.awsLogs({streamPrefix: 'whitelabel-' + String(process.env.ECR_REPOSITORY),}),
+            logging: ecs.LogDrivers.awsLogs({streamPrefix: 'abatech-' + String(process.env.ECR_REPOSITORY),}),
             memoryReservationMiB:512,
             environment: {
                 NODE_ENV: String(process.env.NODE_ENV),
