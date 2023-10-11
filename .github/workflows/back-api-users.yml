@@ -1,4 +1,4 @@
-name: back crockett
+name: api users
 
 on:
   workflow_dispatch:
@@ -6,11 +6,11 @@ on:
     branches:
       - main
     paths:
-      - "back/crockett/**"
+      - "back/api_users/**"
 
 defaults:
   run:
-    working-directory: back/crockett
+    working-directory: back/api_users
 
 env:
   
@@ -18,7 +18,7 @@ env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
-  ECR_REPOSITORY_DEV: crockett-dev
+  ECR_REPOSITORY_DEV: ur-units-increase
   DB_HOST: ${{ secrets.DB_HOST_CROCKETT_PDN }}
   DB_USER: ${{ secrets.DB_USER_CROCKETT_PDN }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD_CROCKETT_PDN }}
@@ -84,40 +84,23 @@ jobs:
           INFRA_ECS_CONFIG: EcsComputing
           INFRA_STACK_NAME: ${{ env.IDENTIFIER_CLONE }}-dev
           INFRA_ECS_VPC_CLUSTER: InfraEcsEc2dev
-          INFRA_VPC_NAME: vpc-whitelabel 
-          INFRA_CLUSTER: whitelabel-dev 
+          INFRA_VPC_NAME: vpc-abatech 
+          INFRA_CLUSTER: abatech-dev 
           PORT: 3000 
-       
-          SECRET_AUTH: ${{ env.IDENTIFIER_CLONE }}-dev
-          PORTAL_NAME: ${{ env.IDENTIFIER_CLONE }}
-          URL_FRONTEND: "https://scaffm8.scaffm8.net"
 
-          SMTP_EMAIL: support@scaffm8.co.nz
-          SMTP_PASSWORD: Sc@ffm8!
-    
           ECR_REPOSITORY: ${{ env.ECR_REPOSITORY_DEV }}
-          ECR_IMAGE_URI: 526382770485.dkr.ecr.us-east-1.amazonaws.com/${{ env.ECR_REPOSITORY_DEV }}:latest
-          S3_BUCKET: true
-          S3_NAME:  ${{ env.IDENTIFIER_CLONE }}-526382770485back-dev
-          S3: true
+          ECR_IMAGE_URI: 738453287931.dkr.ecr.us-east-1.amazonaws.com/${{ env.ECR_REPOSITORY_DEV }}:latest
 
         run: |
-          ACCOUNT_ID=${{ env.ACCOUNT_ID }}
-          REGION=${{ env.AWS_REGION }}
+          AWS_REGION=${{ env.AWS_REGION }}
+          ACCOUNT_ID=${{ env.AWS_ACCOUNT_ID }}
           NODE_ENV=${{ env.NODE_ENV }}
-          SECRET_AUTH=${{ env.SECRET_AUTH }}
-          PORTAL_NAME=${{ env.PORTAL_NAME }}
           URL_FRONTEND=${{ env.URL_FRONTEND }}
           DB_HOST=${{ env.DB_HOST }}
           DB_PORT=${{ env.DB_PORT }}
           DB_USER=${{ env.DB_USER }}
           DB_PASSWORD=${{ env.DB_PASSWORD }}
           DB_NAME=${{ env.DB_NAME }}
-          SMTP_EMAIL=${{ env.SMTP_EMAIL }}
-          SMTP_PASSWORD=${{ env.SMTP_PASSWORD }}
-          AWS_S3_REGION=${{ env.AWS_S3_REGION }}
-          S3_NAME=${{ env.S3_NAME }}
-          S3=${{ env.S3 }}
           ECR_REPOSITORY=${{ env.ECR_REPOSITORY }}
           ECR_IMAGE_URI=${{ env.ECR_IMAGE_URI }}
           PORT=${{ env.PORT }}

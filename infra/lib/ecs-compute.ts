@@ -104,8 +104,6 @@ export class InfraEcsCompute extends cdk.Stack {
             environment: {
                 NODE_ENV: String(process.env.NODE_ENV),
                 PORT: String(process.env.PORT),
-                SECRET_AUTH: String(process.env.SECRET_AUTH),
-                PORTAL_NAME: String(process.env.PORTAL_NAME),
                 URL_FRONTEND: String(process.env.URL_FRONTEND),
                 DB_HOST: String(process.env.DB_HOST),
                 DB_PORT: String(process.env.DB_PORT),
