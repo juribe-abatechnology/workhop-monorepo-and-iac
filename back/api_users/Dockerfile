@@ -8,8 +8,6 @@ RUN npm ci
 
 COPY . /build
 
-RUN npm run build
-
 FROM node:17-alpine
 
 ENV user node
