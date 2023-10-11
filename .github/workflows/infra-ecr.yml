@@ -1,0 +1,50 @@
+name: infra AWS ECR
+
+on:
+  workflow_dispatch:
+defaults:
+  run:
+    working-directory: infra/
+
+
+env: 
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    name: deploy infra ecr
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure AWS credentials from net account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CLOUD }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_CLOUD }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_NONPROD }}
+          aws-region: ${{ env.REGION }}
+
+      - name: Set dev environment
+        run: |
+          echo "CALLER_IDENTITY_ARN=$(aws sts get-caller-identity --query Arn --output text)" >> $GITHUB_ENV
+
+      - name: Install dependencies and AWS Cdk
+        run: |
+          sudo npm install -g aws-cdk
+          npm install
+      
+      - name: CDK Deploy EcrStack
+        env:
+          REGION: ${{ env.REGION }}
+          ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          INFRA_STACK_NAME: EcrStack
+          ENV_CONFIG_NAME: infraECR
+          ECR_REPOSITORIES: "ur-units-increase"
+        run: |
+          ENV_CONFIG_NAME=${{ env.ENV_CONFIG_NAME }}
+          INFRA_STACK_NAME=${{ env.INFRA_STACK_NAME }}
+          REGION=${{ env.REGION }}
+          ACCOUNT_ID=${{ env.ACCOUNT_ID }}
+          ECR_REPOSITORIES=${{ env.ECR_REPOSITORIES }}
+          CALLER_IDENTITY_ARN=${{ env.CALLER_IDENTITY_ARN }}
+          cdk deploy ${{ env.INFRA_STACK_NAME }} -c config=${{ env.ENV_CONFIG_NAME }} --require-approval never
