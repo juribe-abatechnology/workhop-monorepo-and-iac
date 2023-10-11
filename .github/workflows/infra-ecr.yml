@@ -31,7 +31,7 @@ jobs:
       
       - name: CDK Deploy EcrStack
         env:
-          REGION: ${{ env.REGION }}
+          AWS_REGION:  ${{ secrets.AWS_REGION }}
           ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           INFRA_STACK_NAME: EcrStackAba
           ENV_CONFIG_NAME: infraECR
@@ -39,7 +39,7 @@ jobs:
         run: |
           ENV_CONFIG_NAME=${{ env.ENV_CONFIG_NAME }}
           INFRA_STACK_NAME=${{ env.INFRA_STACK_NAME }}
-          REGION=${{ env.REGION }}
+          AWS_REGION=${{ env.AWS_REGION }}
           ACCOUNT_ID=${{ env.ACCOUNT_ID }}
           ECR_REPOSITORIES=${{ env.ECR_REPOSITORIES }}
           CALLER_IDENTITY_ARN=${{ env.CALLER_IDENTITY_ARN }}
