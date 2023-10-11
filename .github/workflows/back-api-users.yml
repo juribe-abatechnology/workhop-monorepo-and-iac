@@ -23,7 +23,7 @@ env:
   DB_USER: ${{ secrets.DB_USER_CROCKETT_PDN }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD_CROCKETT_PDN }}
   DB_NAME: ${{ secrets.DB_NAME_CROCKETT_PDN }}
-  URL_FRONTEND: "Helo Guys"
+  URL_FRONTEND: "Helo-Guys-Abatech"
 
 
 jobs:
