@@ -3,8 +3,10 @@ import { Construct } from 'constructs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import { AutoScalingGroup } from "aws-cdk-lib/aws-autoscaling";
 import {Bucket} from 'aws-cdk-lib/aws-s3';
 import { ClusterUtils } from './utils/cluster';
+
 
 const clusterUtils = new ClusterUtils()
 
@@ -34,11 +36,19 @@ export class InfraEcsCompute extends cdk.Stack {
                 vpc: vpc
         });
         
-        /*
-        cluster.addCapacity('EC2CapacityASG', {
-            instanceType: cdk.aws_ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
+        const autoScalingGroup = new AutoScalingGroup(this, 'ASG', {
+                vpc,
+                instanceType: new ec2.InstanceType('t3.micro'),
+                machineImage: ecs.EcsOptimizedImage.amazonLinux(),
+                maxCapacity: 3
         });
-        */
+
+        
+        const capacityProvider = new ecs.AsgCapacityProvider(this, 'AsgCapacityProvider', {
+            autoScalingGroup,
+          });
+        
+        cluster.addAsgCapacityProvider(capacityProvider);
 
         const executionRolePolicy =  new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
