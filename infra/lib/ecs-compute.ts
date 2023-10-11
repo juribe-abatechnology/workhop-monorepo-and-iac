@@ -63,7 +63,7 @@ export class InfraEcsCompute extends cdk.Stack {
                 ]
         });
         
-        const taskDefinition = new ecs.Ec2TaskDefinition(this, 'TaskDef'+String(process.env.ECR_REPOSITORY), {
+        const taskDefinition = new ecs.Ec2TaskDefinition(this, 'TaskDef'+String(process.env.STACK_NAME), {
 
         })
         
@@ -79,9 +79,9 @@ export class InfraEcsCompute extends cdk.Stack {
         )
         */
         
-        const containerEc2 = taskDefinition.addContainer(String(process.env.ECR_REPOSITORY), {
+        const containerEc2 = taskDefinition.addContainer(String(process.env.STACK_NAME), {
             image: ecs.ContainerImage.fromRegistry(String(process.env.ECR_IMAGE_URI)),
-            logging: ecs.LogDrivers.awsLogs({streamPrefix: 'abatech-' + String(process.env.ECR_REPOSITORY),}),
+            logging: ecs.LogDrivers.awsLogs({streamPrefix: 'abatech-' + String(process.env.STACK_NAME),}),
             memoryReservationMiB:512,
             environment: {
                 NODE_ENV: String(process.env.NODE_ENV),
@@ -102,28 +102,28 @@ export class InfraEcsCompute extends cdk.Stack {
           protocol: ecs.Protocol.TCP
         });
 
-        new cdk.CfnOutput(this, 'Container'+String(process.env.ECR_REPOSITORY), {
+        new cdk.CfnOutput(this, 'Container'+String(process.env.STACK_NAME), {
             value: containerEc2.containerName,
             description: "the name of the container ecr",
             exportName: containerEc2.containerName,
         });
 
-        const securityGroup = new ec2.SecurityGroup(this, 'sgEc2'+String(process.env.ECR_REPOSITORY), {
+        const securityGroup = new ec2.SecurityGroup(this, 'sgEc2'+String(process.env.STACK_NAME), {
             vpc:vpc,
-            securityGroupName: 'securityGroup'+String(process.env.ECR_REPOSITORY)
+            securityGroupName: 'securityGroup'+String(process.env.STACK_NAME)
         });
         securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80));
 
-        const service = new ecs.Ec2Service(this, 'Service'+String(process.env.ECR_REPOSITORY), {
+        const service = new ecs.Ec2Service(this, 'Service'+String(process.env.STACK_NAME), {
           cluster,
           taskDefinition,
-          serviceName: String(process.env.ECR_REPOSITORY),
+          serviceName: String(process.env.STACK_NAME),
           desiredCount:1,
         });
 
         // Setup AutoScaling policy
         const scaling = service.autoScaleTaskCount({ maxCapacity: 3, minCapacity: 1 });
-        scaling.scaleOnCpuUtilization('CpuScaling'+String(process.env.ECR_REPOSITORY), {
+        scaling.scaleOnCpuUtilization('CpuScaling'+String(process.env.STACK_NAME), {
             targetUtilizationPercent: 50,
             scaleInCooldown: cdk.Duration.seconds(60),
             scaleOutCooldown: cdk.Duration.seconds(60)
