@@ -36,7 +36,7 @@ export class InfraEcsCompute extends cdk.Stack {
                 vpc: vpc
         });
         
-        const autoScalingGroup = new AutoScalingGroup(this, 'ASG', {
+        const autoScalingGroup = new AutoScalingGroup(stack, 'ASG', {
                 vpc,
                 instanceType: new ec2.InstanceType('t3.micro'),
                 machineImage: ecs.EcsOptimizedImage.amazonLinux(),
@@ -44,7 +44,7 @@ export class InfraEcsCompute extends cdk.Stack {
         });
 
         
-        const capacityProvider = new ecs.AsgCapacityProvider(this, 'AsgCapacityProvider', {
+        const capacityProvider = new ecs.AsgCapacityProvider(stack, 'AsgCapacityProvider', {
             autoScalingGroup,
           });
         
