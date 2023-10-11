@@ -1,4 +1,4 @@
-name: api users
+name: api auth
 
 on:
   workflow_dispatch:
