@@ -6,7 +6,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import {Bucket} from 'aws-cdk-lib/aws-s3';
 import { ClusterUtils } from './utils/cluster';
 
-const clusterUtils = new ClusterUtils()
+// const clusterUtils = new ClusterUtils()
 
 export class InfraEcsCompute extends cdk.Stack {
 
@@ -143,12 +143,14 @@ export class InfraEcsCompute extends cdk.Stack {
             value: service.serviceArn,
         });
 
-        this.stopTaskDefinition()
+        // this.stopTaskDefinition()
     }
 
+    /*
     async stopTaskDefinition() {
        const taskArn =  await clusterUtils.getClusterTasks();
        await clusterUtils.taskDefinitionStop(taskArn);
     }
+    */
 
 }
