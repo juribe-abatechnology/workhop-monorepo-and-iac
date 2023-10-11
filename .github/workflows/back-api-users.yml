@@ -28,7 +28,6 @@ env:
 
 jobs:
   dev:
-    needs: ci
     name: Environment Dev
     runs-on: ubuntu-latest
     environment: dev
