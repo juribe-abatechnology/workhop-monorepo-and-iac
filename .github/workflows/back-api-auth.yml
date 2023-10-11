@@ -1,0 +1,112 @@
+name: api users
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "back/api_auth/**"
+
+defaults:
+  run:
+    working-directory: back/api_auth
+
+env:
+  
+  STACK_NAME: StackApi-auth
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+  ECR_REPOSITORY_DEV: ur-units-increase
+  DB_HOST: ${{ secrets.DB_HOST_CROCKETT_PDN }}
+  DB_USER: ${{ secrets.DB_USER_CROCKETT_PDN }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD_CROCKETT_PDN }}
+  DB_NAME: ${{ secrets.DB_NAME_CROCKETT_PDN }}
+  URL_FRONTEND: "Helo-Guys-Abatech"
+
+
+jobs:
+  dev:
+    name: Environment Dev
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Tag Number
+        id: tag-number
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Check Tag Release
+        env:
+          RELEASE_VERSION: ${{ steps.tag-number.outputs.tag }}
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
+      - name: Configure AWS credentials from dev account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CLOUD }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_CLOUD }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_NONPROD }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY_DEV }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Set dev environment
+        run: |
+          echo "CALLER_IDENTITY_ARN=$(aws sts get-caller-identity --query Arn --output text)" >> $GITHUB_ENV
+      
+      - name: Install dependencies and aws cdk
+        working-directory: infra/
+        run: |
+          sudo npm install -g aws-cdk
+          npm install
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        working-directory: infra/
+        env:
+          NODE_ENV: development
+          AWS_S3_REGION: ${{ env.AWS_REGION }}
+          INFRA_ECS_CONFIG: EcsComputing
+          INFRA_STACK_NAME: ${{ env.IDENTIFIER_CLONE }}-dev
+          INFRA_ECS_VPC_CLUSTER: InfraEcsEc2dev
+          INFRA_VPC_NAME: vpc-abatech 
+          INFRA_CLUSTER: abatech-dev 
+          PORT: 3000 
+
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY_DEV }}
+          ECR_IMAGE_URI: 738453287931.dkr.ecr.us-east-1.amazonaws.com/${{ env.ECR_REPOSITORY_DEV }}:latest
+
+        run: |
+          AWS_REGION=${{ env.AWS_REGION }}
+          ACCOUNT_ID=${{ env.AWS_ACCOUNT_ID }}
+          NODE_ENV=${{ env.NODE_ENV }}
+          URL_FRONTEND=${{ env.URL_FRONTEND }}
+          DB_HOST=${{ env.DB_HOST }}
+          DB_PORT=${{ env.DB_PORT }}
+          DB_USER=${{ env.DB_USER }}
+          DB_PASSWORD=${{ env.DB_PASSWORD }}
+          DB_NAME=${{ env.DB_NAME }}
+          ECR_REPOSITORY=${{ env.ECR_REPOSITORY }}
+          ECR_IMAGE_URI=${{ env.ECR_IMAGE_URI }}
+          PORT=${{ env.PORT }}
+          INFRA_ECS_CONFIG=${{ env.INFRA_ECS_CONFIG }}
+          STACK_NAME=${{ env.STACK_NAME }}
+          INFRA_CLUSTER=${{ env.INFRA_CLUSTER }}
+          INFRA_ECS_VPC_CLUSTER=${{ env.INFRA_ECS_VPC_CLUSTER }}
+          INFRA_VPC_NAME=${{ env.INFRA_VPC_NAME }}
+          CALLER_IDENTITY_ARN=${{ env.CALLER_IDENTITY_ARN }}
+          cdk deploy ${{ env.STACK_NAME }} -c config=${{ env.INFRA_ECS_CONFIG }} --require-approval never
