@@ -12,7 +12,7 @@ export class InfraEcsCompute extends cdk.Stack {
 
     constructor(scope?: Construct, id?: string, props?: cdk.StackProps){
         super(scope, id, props)
-        console.log('Deploy our stack cluster AWS ECS 🚀')
+        console.log('Deploy our stack cluster AWS ECS 🚀', process.env.CALLER_IDENTITY_ARN)
         const stack = new cdk.Stack(scope, String(process.env.INFRA_ECS_VPC_CLUSTER), {
                 env: {
                     account: process.env.ACCOUNT_ID,
@@ -52,7 +52,7 @@ export class InfraEcsCompute extends cdk.Stack {
         });
         
         const taskDefinition = new ecs.Ec2TaskDefinition(this, 'TaskDef'+String(process.env.ECR_REPOSITORY), {
-        
+
         })
         
         taskDefinition.addToExecutionRolePolicy(executionRolePolicy)

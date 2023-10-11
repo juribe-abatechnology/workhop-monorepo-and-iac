@@ -23,7 +23,7 @@ export class ClusterUtils {
         try {
             const ecsClient = new AWS.ECS();
             const res = await ecsClient.stopTask({
-                cluster: `arn:aws:ecs:us-east-1:526382770485:cluster/${String(process.env.INFRA_CLUSTER)}`,
+                cluster: `arn:aws:ecs:us-east-1:738453287931:cluster/${String(process.env.INFRA_CLUSTER)}`,
                 task: task
             }).promise();
         }catch (error){
