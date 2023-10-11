@@ -16,7 +16,7 @@ export class InfraStackEcr extends cdk.Stack {
 			const ecrPolicyStatement = new PolicyStatement({
 				sid: process.env.INFRA_STACK_NAME + 'AllowPushPull',
 				effect: Effect.ALLOW,
-				principals: [new ArnPrincipal('arn:aws:iam::408058604061:user/ElgarAws')],
+				principals: [new ArnPrincipal(String(process.env.CALLER_IDENTITY_ARN))],
 				actions: [
 					'ecr:GetDownloadUrlForLayer',
 					'ecr:BatchGetImage',
