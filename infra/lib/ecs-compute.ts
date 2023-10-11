@@ -72,7 +72,7 @@ export class InfraEcsCompute extends cdk.Stack {
             s3Bucket.addToResourcePolicy(new iam.PolicyStatement({
                 sid: process.env.INFRA_STACK_NAME + 'AllowPushPull',
 				effect: iam.Effect.ALLOW,
-				principals: [new iam.ArnPrincipal(String(process.env.CALLER_IDENTITY_ARN))],
+				principals: [new iam.ArnPrincipal('arn:aws:iam::738453287931:user/JorgeUribe')],
                 actions: [
                     "s3:PutObject",
                     "s3:GetObject",
