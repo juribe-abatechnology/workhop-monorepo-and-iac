@@ -6,7 +6,7 @@ console.log(process.env.URL_FRONTEND)
 const app = express()
 app.get('/', (req, res) => {
     res.status(200).json({
-        msg: "Hello ABA TECH IAC",
+        msg: "Hello ABA TECH IAC THIS IS ONLY A PROPOSOL TO IMPROVE TIME",
         env: process.env.URL_FRONTEND
     })
 })
