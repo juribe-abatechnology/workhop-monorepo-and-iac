@@ -6,10 +6,6 @@ defaults:
   run:
     working-directory: infra/
 
-
-env: 
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -22,7 +18,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CLOUD }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_CLOUD }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_NONPROD }}
-          aws-region: ${{ env.REGION }}
+          aws-region:  ${{ secrets.AWS_REGION }}
 
       - name: Set dev environment
         run: |
