@@ -1,4 +1,4 @@
-name: api auth
+name: Eiv image
 
 on:
   workflow_dispatch:
