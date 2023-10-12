@@ -35,7 +35,7 @@ jobs:
           ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           INFRA_STACK_NAME: EcrStackAba
           ENV_CONFIG_NAME: infraECR
-          ECR_REPOSITORIES: "ur-units-increase"
+          ECR_REPOSITORIES: "ur-units-increase,eiv-ecr"
         run: |
           ENV_CONFIG_NAME=${{ env.ENV_CONFIG_NAME }}
           INFRA_STACK_NAME=${{ env.INFRA_STACK_NAME }}
