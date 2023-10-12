@@ -18,7 +18,7 @@ env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
-  ECR_REPOSITORY_DEV: ur-units-increase
+  ECR_REPOSITORY_DEV: eiv-ecr
   DB_HOST: ${{ secrets.DB_HOST_CROCKETT_PDN }}
   DB_USER: ${{ secrets.DB_USER_CROCKETT_PDN }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD_CROCKETT_PDN }}
