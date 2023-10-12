@@ -1,0 +1,1 @@
+select * from projects_ai.eiv.DATASET_INPUT_EIV

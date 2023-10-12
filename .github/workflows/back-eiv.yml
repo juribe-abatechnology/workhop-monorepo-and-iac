@@ -6,11 +6,11 @@ on:
     branches:
       - main
     paths:
-      - "back/eiv/**"
+      - "back/aba-admissions-manager/**"
 
 defaults:
   run:
-    working-directory: back/eiv
+    working-directory: back/aba-admissions-manager
 
 env:
   

@@ -1,0 +1,30 @@
+# Ignore commonly unnecessary files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.log
+*.sqlite3
+
+# Ignore development environment files
+venv/
+.env
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore package manager directories
+node_modules/
+bower_components/
+jspm_packages/
+yarn-error.log
+yarn-debug.log*
+
+# Ignore version control directories
+.git/
+.hg/
+.svn/
+
+# Ignore SH helpers files
+*.sh

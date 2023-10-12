@@ -1,0 +1,25 @@
+rds:
+  host: airds-aidb-kdtvpoemgnas.cdrzxr1mj9p2.us-east-1.rds.amazonaws.com
+  port: 5432
+  database: icbdai
+  schema: PUBLIC
+snowflake:
+  account: vpa37921.us-east-1
+  warehouse: COMPUTE_WH
+  database: LIBRARY
+  schema: PUBLIC
+  role: COLLAB_DATA
+encoder:
+  time: 'pickle/time_encoder.pkl'
+  cash: 'pickle/cash_encoder.pkl'
+impute:
+  time: 'pickle/'
+  cash: 'pickle/cash_impute.pkl'
+power:
+  time: 'pickle/'
+scale:
+  time: 'pickle/'
+  cash: 'pickle/cash_scale.pkl'
+model:
+  time: 'pickle/'
+  cash: 'pickle/cash_model.pkl'
