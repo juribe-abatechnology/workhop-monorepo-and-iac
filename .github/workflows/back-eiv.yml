@@ -1,4 +1,4 @@
-name: Eiv image
+name: Eiv image ecr
 
 on:
   workflow_dispatch:
